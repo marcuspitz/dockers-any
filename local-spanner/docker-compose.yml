@@ -1,0 +1,17 @@
+version: "2.2"
+
+services:
+  spanner:
+    image: gcr.io/cloud-spanner-emulator/emulator
+    ports:
+      - 9010:9010
+      - 9020:9020
+  init-spanner:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk
+    command: "./initspanner.sh"
+    volumes:
+    - ./initspanner.sh:/initspanner.sh
+    - ./time-slots.ddl:/time-slots.ddl
+    depends_on:
+      spanner:
+        condition: service_started

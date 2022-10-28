@@ -1,0 +1,17 @@
+CREATE TABLE Owner (
+  OwnerId BYTES(16) NOT NULL,
+  Enabled BOOL NOT NULL,
+  Configuration STRING(MAX),
+) PRIMARY KEY(OwnerId);
+
+CREATE TABLE TimeSlot (
+  Start INT64 NOT NULL,
+  Finish INT64 NOT NULL,
+  StartDate INT64 NOT NULL,
+  FinishDate INT64 NOT NULL,
+  OwnerId BYTES(16) NOT NULL,
+  LinkedTo BYTES(16),
+  ParentId BYTES(16) NOT NULL,
+  FOREIGN KEY(OwnerId) REFERENCES Owner(OwnerId),
+) PRIMARY KEY(OwnerId, Start DESC, Finish),
+  INTERLEAVE IN PARENT Owner ON DELETE NO ACTION;
